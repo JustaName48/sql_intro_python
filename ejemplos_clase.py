@@ -32,7 +32,7 @@ def create_schema():
     # Ejecutar una query
     c.execute("""
                 DROP TABLE IF EXISTS persona;
-            """)
+            """) #Lo que se ejecuta es que se BORRA la tabla. 
 
     # Ejecutar una query
     c.execute("""
@@ -42,7 +42,7 @@ def create_schema():
                 [age] INTEGER,
                 [nationality] TEXT
             );
-            """)
+            """) # Creación de la nueva Tabla.
 
     # Para salvar los cambios realizados en la DB debemos
     # ejecutar el commit, NO olvidarse de este paso!
@@ -52,7 +52,7 @@ def create_schema():
     conn.close()
 
 
-def insert_persona(name, age, nationality=""):
+def insert_persona(name, age, nationality=""): # Si no se ingresa una nacionalidad automaticamente se inserta un espacio vacio.
     conn = sqlite3.connect('personas.db')
     c = conn.cursor()
 
@@ -60,7 +60,8 @@ def insert_persona(name, age, nationality=""):
 
     c.execute("""
         INSERT INTO persona (name, age, nationality)
-        VALUES (?,?,?);""", values)
+        VALUES (?,?,?);""", values) # para insertar una variable con varios parametros se cierra 
+                                    # el str y se pone coma antes de la variable a ingresar
 
     conn.commit()
     # Cerrar la conexión con la base de datos
@@ -73,7 +74,7 @@ def insert_grupo(group):
 
     c.executemany("""
         INSERT INTO persona (name, age, nationality)
-        VALUES (?,?,?);""", group)
+        VALUES (?,?,?);""", group) # executemany sirve para ingresar varios datos al mismo tiempo.
 
     conn.commit()
     # Cerrar la conexión con la base de datos
@@ -87,7 +88,8 @@ def show():
 
     # Leer todas las filas y obtener todos los datos juntos
     c.execute('SELECT * FROM persona')
-    data = c.fetchall()
+    data = c.fetchall() # Se pide toda la info que se recupero en la line anterio y
+                        # se la guarda en la variable data.
     print(data)
 
     # Leer todas las filas y obtener los datos de a uno
@@ -99,6 +101,7 @@ def show():
             break
         print(row)
 
+    # 3ra opción:
     print('Recorrer los datos directamente de la query')
     for row in c.execute('SELECT * FROM persona'):
         print(row)
@@ -129,7 +132,7 @@ def delete_persona(name):
     c = conn.cursor()
 
     # Borrar la fila cuyo nombre coincida con la búsqueda
-    # NOTA: Recordar que las tupla un solo elemento se definen como
+    # NOTA: Recordar que las tupla con un solo elemento se definen como
     # (elemento,)
     # Si presta a confusión usar una lista --> [elemento]
     rowcount = c.execute("DELETE FROM persona WHERE name =?", (name,)).rowcount
@@ -160,7 +163,7 @@ if __name__ == '__main__':
     group = [('Max', 40, 'Estados Unidos'),
              ('SQL', 13, 'Inglaterra'),
              ('SQLite', 20, 'Estados Unidos'),
-             ]
+             ] # Una lista con 3 tuplas.
 
     insert_grupo(group)
 
